@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J 414
+#SBATCH -J citation_network
 #SBATCH --account=proj13
 #SBATCH --nodes=1
 #SBATCH --nodelist=kolyoz[25-30,32-60]
@@ -8,13 +8,13 @@
 #SBATCH --partition=kolyoz-cuda
 #SBATCH --gres=gpu:1
 #SBATCH --time=0-12:00:00
-#SBATCH --output=res/414-%j.out
-#SBATCH --error=res/414-%j.err
+#SBATCH --output=res/citation_network-%j.out
+#SBATCH --error=res/citation_network-%j.err
 #SBATCH --export=NONE
 
 hostname
 
-repo_directory="/arf/home/delbek/414/"
+repo_directory="/arf/home/delbek/citation_network/"
 
 module purge
 unset SLURM_EXPORT_ENV
@@ -38,4 +38,4 @@ cmake ..
 make
 cd ..
 
-./build/414
+./build/citation_network
