@@ -25,9 +25,6 @@ module use /arf/sw/modulefiles
 
 module load comp/cmake/3.31.1
 module load comp/gcc/12.3.0
-module load lib/cuda/13.0
-module load lib/openmpi/4.1.6
-module load comp/python/3.12.0
 
 export SRUN_CPUS_PER_TASK=${SLURM_CPUS_PER_TASK:-16}
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-16}

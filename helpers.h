@@ -8,9 +8,8 @@
 #include <unordered_map>
 #include <cstdint>
 #include <algorithm>
-#include "omp.h"
 
-#define DIRECTORY "/arf/scratch/delbek/414/"
+#define DIRECTORY "/arf/scratch/delbek/citation_network/"
 
 struct Author
 {
