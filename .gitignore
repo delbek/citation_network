@@ -1,2 +1,6 @@
 build/
 res/
+run.sh
+*.bin
+*.mtx
+*txt

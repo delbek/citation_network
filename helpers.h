@@ -9,8 +9,6 @@
 #include <cstdint>
 #include <algorithm>
 
-#define DIRECTORY "/arf/scratch/delbek/citation_network/"
-
 struct Author
 {
     std::string omid;
@@ -27,3 +25,15 @@ struct Paper
     std::string type;
     std::string publisher;
 };
+
+inline bool isAuthorOf(const Paper& paper, std::string fullName)
+{
+    for (const auto& author: paper.authors)
+    {
+        if (author.fullName == fullName)
+        {
+            return true;
+        }
+    }
+    return false;
+}
