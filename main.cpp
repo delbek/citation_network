@@ -48,7 +48,6 @@ int main()
         "Levi, Albert",
         "Balcisoy, Selim",
         "Tastan, Oznur",
-        "Kocuk, Burak",
         "Goktas, Polat",
         "Yenigun, Husnu",
         "Arin, Inanc"
