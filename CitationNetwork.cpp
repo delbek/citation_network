@@ -27,6 +27,8 @@ CitationNetwork::~CitationNetwork()
     delete[] m_papers;
     delete[] m_rowPtrs;
     delete[] m_colIds;
+    delete[] m_colPtrs;
+    delete[] m_rowIds;
 }
 
 std::vector<std::string> CitationNetwork::parseCSVLine(const std::string& line)
@@ -263,7 +265,30 @@ void CitationNetwork::buildCSR(const std::string& indexFile)
     }
     f2.close();
 
-    delete[] fillPtr;
+    m_colPtrs = new unsigned[m_numPapers + 1]();
+    m_rowIds = new unsigned[m_numCitations];
+    for (unsigned i = 0; i < m_numPapers; ++i)
+    {
+        for (unsigned nnz = m_rowPtrs[i]; nnz < m_rowPtrs[i + 1]; ++nnz)
+        {
+            unsigned j = m_colIds[nnz];
+            ++m_colPtrs[j + 1];
+        }
+    }
+    for (unsigned j = 0; j < m_numPapers; ++j)
+    {
+        m_colPtrs[j + 1] += m_colPtrs[j];
+        fillPtr[j] = m_colPtrs[j];
+    }
+    
+    for (unsigned i = 0; i < m_numPapers; ++i)
+    {
+        for (unsigned nnz = m_rowPtrs[i]; nnz < m_rowPtrs[i + 1]; ++nnz)
+        {
+            unsigned j = m_colIds[nnz];
+            m_rowIds[fillPtr[j]++] = i;
+        }
+    }
 }
 
 void CitationNetwork::writeToBinary(const std::string& binaryFile)
@@ -274,6 +299,8 @@ void CitationNetwork::writeToBinary(const std::string& binaryFile)
     f.write(reinterpret_cast<const char*>(&m_numCitations), sizeof(unsigned));
     f.write(reinterpret_cast<const char*>(m_rowPtrs), sizeof(unsigned) * (m_numPapers + 1));
     f.write(reinterpret_cast<const char*>(m_colIds), sizeof(unsigned) * m_numCitations);
+    f.write(reinterpret_cast<const char*>(m_colPtrs), sizeof(unsigned) * (m_numPapers + 1));
+    f.write(reinterpret_cast<const char*>(m_rowIds), sizeof(unsigned) * m_numCitations);
 
     for (unsigned i = 0; i < m_numPapers; ++i)
     {
@@ -321,10 +348,14 @@ void CitationNetwork::readFromBinary(const std::string& binaryFile)
 
     m_rowPtrs = new unsigned[m_numPapers + 1];
     m_colIds = new unsigned[m_numCitations];
+    m_colPtrs = new unsigned[m_numPapers + 1];
+    m_rowIds = new unsigned[m_numCitations];
     m_papers = new Paper[m_numPapers];
 
     f.read(reinterpret_cast<char*>(m_rowPtrs), sizeof(unsigned) * (m_numPapers + 1));
     f.read(reinterpret_cast<char*>(m_colIds), sizeof(unsigned) * m_numCitations);
+    f.read(reinterpret_cast<char*>(m_colPtrs), sizeof(unsigned) * (m_numPapers + 1));
+    f.read(reinterpret_cast<char*>(m_rowIds), sizeof(unsigned) * m_numCitations);
 
     for (unsigned i = 0; i < m_numPapers; ++i)
     {

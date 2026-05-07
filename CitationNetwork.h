@@ -19,6 +19,8 @@ public:
     std::unordered_map<std::string, unsigned>& getOmitToIndex() {return m_omidToIndex;}
     unsigned* getRowPtrs() const {return m_rowPtrs;}
     unsigned* getColIds() const {return m_colIds;}
+    unsigned* getColPtrs() const {return m_colPtrs;}
+    unsigned* getRowIds() const {return m_rowIds;}
 
 private:
     std::vector<std::string> parseCSVLine(const std::string& line);
@@ -39,4 +41,6 @@ private:
     std::unordered_map<std::string, unsigned> m_omidToIndex;
     unsigned* m_rowPtrs;
     unsigned* m_colIds;
+    unsigned* m_colPtrs;
+    unsigned* m_rowIds;
 };

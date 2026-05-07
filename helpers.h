@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <cstdint>
 #include <algorithm>
+#include <limits>
+#include <atomic>
 
 struct Author
 {
